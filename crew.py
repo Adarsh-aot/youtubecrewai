@@ -20,7 +20,7 @@ youtube = Tool(
 llm = ChatGroq(
     temperature=0,
     model_name="llama3-70b-8192",
-    api_key="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",
+    api_key="",
 )
 
 # Define the finder agent
