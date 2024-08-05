@@ -26,8 +26,8 @@ Before you begin, ensure you have the following installed:
    Clone or download this repository to your local machine.
 
    ```bash
-   git clone <repository_url>
-   cd youtube-channel-finder
+   git clone https://github.com/Adarsh-aot/youtubecrewai.git
+   cd youtubecrewai
    ```
 
 2. **Install Dependencies**: 
