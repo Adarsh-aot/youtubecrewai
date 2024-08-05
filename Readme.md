@@ -56,7 +56,7 @@ The project contains the following key files:
 ## Code Overview
 
 The main script, `app.py`, sets up the CrewAI framework to find YouTube channels based on a specified topic. Here’s a brief overview of the code:
-
+```python
 
 import streamlit as st
 from crewai import Agent, Task, Crew, Process
