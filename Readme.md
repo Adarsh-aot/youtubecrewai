@@ -1,8 +1,17 @@
-# README.md for YouTube Search CrewAI Project
+Here's a `README.md` file for your YouTube Channel Finder Streamlit application. This file provides an overview, installation instructions, usage guidelines, and other relevant information.
 
-## Introduction
+```markdown
+# YouTube Channel Finder
 
-This project demonstrates how to utilize CrewAI to create an agent-based system that finds the best YouTube channels for learning specific skills. The primary focus is on leveraging the YouTube search tool to provide users with relevant educational content.
+## Overview
+
+The YouTube Channel Finder is a Streamlit application that helps users discover the best YouTube channels for learning specific skills. By entering a skill topic, users can quickly find relevant channels that provide educational content.
+
+## Features
+
+- Search for YouTube channels based on user-defined topics.
+- Returns the top two channels related to the specified skill.
+- User-friendly interface built with Streamlit.
 
 ## Prerequisites
 
@@ -10,18 +19,22 @@ Before you begin, ensure you have the following installed:
 
 - Python 3.6 or higher
 - Pip, the Python package manager
-- Required Python libraries (listed below)
 
 ## Installation
 
 1. **Clone the Repository**: 
    Clone or download this repository to your local machine.
 
+   ```bash
+   git clone <repository_url>
+   cd youtube-channel-finder
+   ```
+
 2. **Install Dependencies**: 
    Navigate to the project directory and install the required packages:
 
    ```bash
-   pip install crewai langchain langchain_groq python-dotenv
+   pip install streamlit crewai langchain langchain_groq python-dotenv
    ```
 
 3. **Set Up Environment Variables**: 
@@ -37,19 +50,20 @@ Before you begin, ensure you have the following installed:
 
 The project contains the following key files:
 
-- `crew.py`: The main script that initializes the CrewAI components and executes the task.
+- `app.py`: The main script that initializes the CrewAI components and executes the task.
 - `.env`: A file for storing environment variables securely.
 
 ## Code Overview
 
-The main script, `crew.py`, sets up the CrewAI framework to find YouTube channels based on a specified topic. Here’s a brief overview of the code:
+The main script, `app.py`, sets up the CrewAI framework to find YouTube channels based on a specified topic. Here’s a brief overview of the code:
 
 ```python
-from crewai import Agent, Task, Crew
+import streamlit as st
+from crewai import Agent, Task, Crew, Process
 from langchain.agents import Tool
 from langchain_groq import ChatGroq
-from dotenv import load_dotenv
 from langchain_community.tools import YouTubeSearchTool
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -72,8 +86,8 @@ llm = ChatGroq(
 # Define the finder agent
 finder = Agent(
     role="Finder",
-    goal="Find best possible YouTube channel for learning a skill({topic}) from YouTube.",
-    backstory="You are an agent that helps you find the best possible YouTube channel for learning a skill({topic}).",
+    goal="Find 2 best possible YouTube channels for learning a skill ({topic}) from YouTube.",
+    backstory="You are an agent that helps users find the best possible YouTube channels for learning a skill ({topic}).",
     tools=[youtube],
     llm=llm 
 )
@@ -81,7 +95,7 @@ finder = Agent(
 # Create a task for the finder agent
 finder_task = Task(
     name="Finder",
-    description="Find best possible YouTube channel for learning a skill({topic}) from YouTube.",
+    description="Find 2 best possible YouTube channels for learning a skill ({topic}) from YouTube.",
     expected_output="Channel Name 1 link Channel Name 2 link",
     agent=finder,
     tools=[youtube]
@@ -92,14 +106,22 @@ finder_crew = Crew(
     name="Finder",
     tasks=[finder_task],
     agents=[finder], 
+    process=Process.sequential,
     verbose=True
 )
 
-# Run the crew with the specified topic
-result = finder_crew.kickoff({"topic": "python"})
+# Streamlit UI
+st.title("YouTube Channel Finder")
 
-# Print the result
-print(result)
+topic = st.text_input("Enter a skill topic (e.g., Python):")
+
+if st.button("Find Channels"):
+    if topic:
+        result = finder_crew.kickoff({"topic": topic})
+        st.write("Results:")
+        st.write(result)
+    else:
+        st.error("Please enter a topic to search.")
 ```
 
 ### Explanation of Key Components
@@ -108,29 +130,43 @@ print(result)
   
 - **Agent**: The `Finder` agent is designed to locate the best YouTube channels for learning a specified skill.
 
-- **Task**: A task is defined for the `Finder` agent, specifying what it needs to accomplish and the expected output format.
+- **Task**: A task is defined for the `Finder` agent, specifying its description and associated tools.
 
-- **Crew**: The crew is assembled with the defined agent and task, ready to execute the search.
+- **Crew**: The crew is formed, consisting of the `Finder` agent and the task defined earlier.
 
-## Running the Project
+## Running the Application
 
-To run the project, execute the following command in your terminal:
+To run the application, execute the following command in your terminal:
 
 ```bash
-python crew.py
+streamlit run app.py
 ```
 
-You can change the topic in the `kickoff` method to search for different skills.
+This will start a local server, and you can interact with the application through your web browser. Enter a skill topic and click the "Find Channels" button to search for relevant YouTube channels.
 
-## Conclusion
+## License
 
-This project showcases the capabilities of CrewAI in creating collaborative AI agents that can assist users in finding educational resources. By leveraging YouTube's vast content, users can easily discover channels that suit their learning needs.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Feel free to expand upon this project by adding more features or integrating additional tools!
+## Acknowledgements
 
-Citations:
-[1] https://blog.gopenai.com/crewai-in-action-code-examples-for-building-your-first-crew-fac6f531b52c
-[2] https://composio.dev/blog/crewai-examples/
-[3] https://github.com/stephenc222/example-crewai
-[4] https://www.youtube.com/watch?v=vhbfs38XmKk
-[5] https://alejandro-ao.com/crew-ai-crash-course-step-by-step/
+- [Streamlit](https://streamlit.io/)
+- [CrewAI](https://crewai.com/)
+- [Langchain](https://langchain.com/)
+- [YouTube API](https://developers.google.com/youtube/v3)
+
+```
+
+### Explanation of the README Structure
+
+1. **Overview**: Brief introduction to the application and its purpose.
+2. **Features**: Highlights the main functionalities of the app.
+3. **Prerequisites**: Lists the required software and versions.
+4. **Installation**: Step-by-step instructions for setting up the application.
+5. **Project Structure**: Describes the main files in the project.
+6. **Code Overview**: Provides a summary of the main code components.
+7. **Running the Application**: Instructions on how to start the Streamlit app.
+8. **License**: Information about the licensing of the project.
+9. **Acknowledgements**: Credits to the libraries and tools used in the project.
+
+Feel free to modify any sections to better fit your project's specifics or add any additional information you think is necessary!

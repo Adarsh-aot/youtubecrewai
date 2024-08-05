@@ -1,11 +1,9 @@
-from crewai import Agent, Task, Crew
-import os
+import streamlit as st
+from crewai import Agent, Task, Crew , Process
 from langchain.agents import Tool
-from langchain.utilities import WikipediaAPIWrapper
-from langchain.tools import DuckDuckGoSearchRun
 from langchain_groq import ChatGroq
-from dotenv import load_dotenv
 from langchain_community.tools import YouTubeSearchTool
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -18,17 +16,17 @@ youtube = Tool(
     description="Useful for when you need to answer questions about current events. Input should be a search query.",
 )
 
-# Setup API keys if needed (not required for Wikipedia or DuckDuckGo)
+# Setup API keys if needed
 llm = ChatGroq(
     temperature=0,
     model_name="llama3-70b-8192",
-    api_key="",
+    api_key="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",
 )
 
 # Define the finder agent
 finder = Agent(
     role="Finder",
-    goal="Find best possible YouTube channel for learning a skill({topic}) from YouTube.",
+    goal="Find 2 best possible YouTube channel for learning a skill({topic}) from YouTube.",
     backstory="You are an agent that helps you find the best possible YouTube channel for learning a skill({topic}).",
     tools=[youtube],
     llm=llm 
@@ -37,8 +35,8 @@ finder = Agent(
 # Create a task for the finder agent
 finder_task = Task(
     name="Finder",
-    description="Find best possible YouTube channel for learning a skill({topic}) from YouTube.",
-    expected_output="Channel Name 1 link Channel Name 2 link" ,
+    description="Find 2 best possible YouTube channel for learning a skill({topic}) from YouTube.",
+    expected_output="Channel Name 1 link Channel Name 2 link",
     agent=finder,
     tools=[youtube]
 )
@@ -48,11 +46,19 @@ finder_crew = Crew(
     name="Finder",
     tasks=[finder_task],
     agents=[finder], 
+    process=Process.sequential,
     verbose=True
 )
 
-# Run the crew with the specified topic
-result = finder_crew.kickoff({"topic": "python"})
+# Streamlit UI
+st.title("YouTube Channel Finder")
 
-# Print the result
-print(result)
+topic = st.text_input("Enter a skill topic (e.g., Python):")
+
+if st.button("Find Channels"):
+    if topic:
+        result = finder_crew.kickoff({"topic": topic})
+        st.write("Results:")
+        st.write(result)
+    else:
+        st.error("Please enter a topic to search.")
