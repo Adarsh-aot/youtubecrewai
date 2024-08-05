@@ -1,6 +1,6 @@
 Here's a `README.md` file for your YouTube Channel Finder Streamlit application. This file provides an overview, installation instructions, usage guidelines, and other relevant information.
 
-```markdown
+
 # YouTube Channel Finder
 
 ## Overview
@@ -26,8 +26,8 @@ Before you begin, ensure you have the following installed:
    Clone or download this repository to your local machine.
 
    ```bash
-   git clone <repository_url>
-   cd youtube-channel-finder
+   git clone https://github.com/Adarsh-aot/youtubecrewai.git
+   cd youtubecrewai
    ```
 
 2. **Install Dependencies**: 
@@ -56,8 +56,8 @@ The project contains the following key files:
 ## Code Overview
 
 The main script, `app.py`, sets up the CrewAI framework to find YouTube channels based on a specified topic. Here’s a brief overview of the code:
-
 ```python
+
 import streamlit as st
 from crewai import Agent, Task, Crew, Process
 from langchain.agents import Tool
@@ -155,7 +155,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Langchain](https://langchain.com/)
 - [YouTube API](https://developers.google.com/youtube/v3)
 
-```
+
 
 ### Explanation of the README Structure
 
