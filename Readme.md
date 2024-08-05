@@ -155,7 +155,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Langchain](https://langchain.com/)
 - [YouTube API](https://developers.google.com/youtube/v3)
 
-```
+
 
 ### Explanation of the README Structure
 
