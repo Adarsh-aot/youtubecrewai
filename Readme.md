@@ -1,6 +1,6 @@
 Here's a `README.md` file for your YouTube Channel Finder Streamlit application. This file provides an overview, installation instructions, usage guidelines, and other relevant information.
 
-```markdown
+
 # YouTube Channel Finder
 
 ## Overview
@@ -57,7 +57,7 @@ The project contains the following key files:
 
 The main script, `app.py`, sets up the CrewAI framework to find YouTube channels based on a specified topic. Here’s a brief overview of the code:
 
-```python
+
 import streamlit as st
 from crewai import Agent, Task, Crew, Process
 from langchain.agents import Tool
